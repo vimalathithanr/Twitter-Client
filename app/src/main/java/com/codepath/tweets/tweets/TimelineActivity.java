@@ -46,8 +46,19 @@ public class TimelineActivity extends AppCompatActivity {
         View v = inflator.inflate(R.layout.custom_actionbar, null);
         actionBar.setCustomView(v);
 
+        lvTweets.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public boolean onLoadMore(int page, int totalItemsCount) {
+                client.addPage(page);
+                client = TwitterApplication.getRestClient();
+                populateTimeline();
+                // or customLoadMoreDataFromApi(totalItemsCount);
+                return true; // ONLY if more data is actually being loaded; false otherwise.
+            }
+        });
         client = TwitterApplication.getRestClient();
         populateTimeline();
+
     }
 
 

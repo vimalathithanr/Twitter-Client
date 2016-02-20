@@ -11,6 +11,12 @@ import android.widget.TextView;
 import com.codepath.tweets.tweets.models.Tweet;
 import com.squareup.picasso.Picasso;
 
+import org.ocpsoft.pretty.time.PrettyTime;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,22 +30,57 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        //1. Get the tweet
+
         Tweet tweet = getItem(position);
-        //2. Find or inflate the template
-        if(convertView == null){
+
+        if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
         }
-        //3. Find the subviews to fill the data in the template
+
         ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
         TextView tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
         TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
-        //4. Populate data into the subviews
+        TextView tvTime = (TextView) convertView.findViewById(R.id.tvTimestamp);
+
+
+
         tvUserName.setText(tweet.getUser().getScreenName());
         tvBody.setText(tweet.getBody());
+
+        tvTime.setText(dateFormat(tweet.getCreatedAt()));
         ivProfileImage.setImageResource(android.R.color.transparent);
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
-        //5. return the view to be onserted into the list
         return convertView;
+    }
+
+
+    public String dateFormat(String serverDate){
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy");
+        Date d = null;
+        try {
+            d = sdf.parse(serverDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(d);
+        long time = c.getTimeInMillis();
+
+        String prettyTimeString = new PrettyTime().format(new Date(time));
+        String prettyTime = null;
+
+        if (prettyTimeString.contains("minutes")) {
+            prettyTime = prettyTimeString.replace(" minutes ago", "m");
+        } else if (prettyTimeString.contains("minute")) {
+            prettyTime = prettyTimeString.replace(" minute ago", "m");
+        } else if (prettyTimeString.contains("hours")) {
+            prettyTime = prettyTimeString.replace(" hours ago", "h");
+        } else if (prettyTimeString.contains("hour")) {
+            prettyTime = prettyTimeString.replace(" hour ago", "h");
+        }
+
+        return prettyTime;
+
     }
 }
