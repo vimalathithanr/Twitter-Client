@@ -1,9 +1,15 @@
 package com.codepath.tweets.tweets;
 
+
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ListView;
 
 import com.codepath.tweets.tweets.models.Tweet;
@@ -33,8 +39,20 @@ public class TimelineActivity extends AppCompatActivity {
         aTweets = new TweetsArrayAdapter(this, tweets);
         lvTweets.setAdapter(aTweets);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true);
+
+        LayoutInflater inflator = (LayoutInflater) this .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflator.inflate(R.layout.custom_actionbar, null);
+        actionBar.setCustomView(v);
+
         client = TwitterApplication.getRestClient();
         populateTimeline();
+    }
+
+
+    private void actionbar(){
+
     }
 
     private void populateTimeline(){
