@@ -2,6 +2,7 @@ package com.codepath.tweets.tweets;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.util.Log;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.codepath.tweets.tweets.models.Tweet;
@@ -27,6 +29,7 @@ public class TimelineActivity extends AppCompatActivity {
     private ArrayList<Tweet> tweets;
     private TweetsArrayAdapter aTweets;
     private ListView lvTweets;
+    private ImageView ivCompose;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +45,17 @@ public class TimelineActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowCustomEnabled(true);
 
-        LayoutInflater inflator = (LayoutInflater) this .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflator = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflator.inflate(R.layout.custom_actionbar, null);
         actionBar.setCustomView(v);
+
+        ivCompose = (ImageView) findViewById(R.id.ivCompose);
+        ivCompose.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Intent in = new Intent(TimelineActivity.this, ComposeTweetActivity.class);
+                startActivity(in);
+            }
+        });
 
         lvTweets.setOnScrollListener(new EndlessScrollListener() {
             @Override
@@ -61,10 +72,6 @@ public class TimelineActivity extends AppCompatActivity {
 
     }
 
-
-    private void actionbar(){
-
-    }
 
     private void populateTimeline(){
         client.getHomeTimeline(new JsonHttpResponseHandler(){

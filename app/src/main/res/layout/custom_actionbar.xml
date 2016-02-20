@@ -4,11 +4,21 @@
     android:layout_height="match_parent"
     android:id="@+id/layout">
 
+
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/ivLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/twitter_logo" />
+
+    <ImageView
+        android:id="@+id/ivCompose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="?attr/actionBarSize"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/twitter_logo" />
+        android:src="@drawable/composetweet" />
 </RelativeLayout>

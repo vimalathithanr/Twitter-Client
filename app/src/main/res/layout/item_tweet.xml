@@ -61,7 +61,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ibReply"
+        android:id="@+id/ivReply"
         android:layout_marginRight="60dp"
         android:layout_below="@+id/tvBody"
         android:layout_toRightOf="@+id/ivProfileImage"
@@ -71,17 +71,17 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ibRetweet"
+        android:id="@+id/ivRetweet"
         android:layout_marginRight="60dp"
         android:layout_below="@+id/tvBody"
-        android:layout_toRightOf="@+id/ibReply"
+        android:layout_toRightOf="@+id/ivReply"
         android:src="@drawable/retweet_button"/>
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ibLike"
+        android:id="@+id/ivLike"
         android:layout_below="@+id/tvBody"
-        android:layout_toRightOf="@+id/ibRetweet"
+        android:layout_toRightOf="@+id/ivRetweet"
         android:src="@drawable/like"/>
 </RelativeLayout>

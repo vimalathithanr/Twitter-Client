@@ -14,6 +14,15 @@ public class Tweet {
     private long uid;
     private String createdAt;
     private User user;
+    private static String composeTweet;
+
+    public String getComposeTweet() {
+        return this.composeTweet;
+    }
+
+    public void setComposeTweet(String composeTweet) {
+        this.composeTweet = composeTweet;
+    }
 
     public User getUser() {
         return user;

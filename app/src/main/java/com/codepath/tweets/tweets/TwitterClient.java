@@ -6,6 +6,7 @@ import org.scribe.builder.api.TwitterApi;
 import android.content.Context;
 
 import com.codepath.oauth.OAuthBaseClient;
+import com.codepath.tweets.tweets.models.Tweet;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -36,6 +37,14 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().get(apiUrl, params, handler);
     }
 
+    public void postTweet(AsyncHttpResponseHandler handler) {
+        Tweet tweet = new Tweet();
+        String status = tweet.getComposeTweet();
+        String apiUrl = getApiUrl("statuses/update.json");
+        RequestParams params = new RequestParams();
+        params.put("status", status);
+        getClient().post(apiUrl, params, handler);
+    }
     //composing a tweet
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
