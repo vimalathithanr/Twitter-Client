@@ -15,6 +15,15 @@ public class Tweet {
     private String createdAt;
     private User user;
     private static String composeTweet;
+    private long retweetCount;
+
+    public long getRetweetCount() {
+        return retweetCount;
+    }
+
+    public void setRetweetCount(long retweetCount) {
+        this.retweetCount = retweetCount;
+    }
 
     public void setBody(String body) {
         this.body = body;
@@ -65,6 +74,7 @@ public class Tweet {
         try {
             tweet.body = jsonObject.getString("text");
             tweet.uid = jsonObject.getLong("id");
+            tweet.retweetCount = jsonObject.getLong("retweet_count");
             tweet.createdAt = jsonObject.getString("created_at");
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
         } catch (JSONException e) {

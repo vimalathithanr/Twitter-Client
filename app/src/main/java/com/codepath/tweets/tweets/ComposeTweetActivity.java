@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.codepath.tweets.tweets.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -20,6 +23,7 @@ public class ComposeTweetActivity extends AppCompatActivity {
     private TwitterClient client;
     private EditText etCompose;
     private Tweet tweet;
+    private TextView tvCount;
     String composeTweet;
     private String createdAt;
     private String id;
@@ -27,17 +31,37 @@ public class ComposeTweetActivity extends AppCompatActivity {
     private String name;
     private String screenName;
     private String profileImage;
+    private int length = 140;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose_tweet);
+        tvCount = (TextView) findViewById(R.id.tvCount);
+        etCompose = (EditText) findViewById(R.id.etCompose);
+
+        etCompose.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tvCount.setText(String.valueOf(length - count));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
     public void postTweet(View v) {
-        etCompose = (EditText) findViewById(R.id.etCompose);
+
         tweet = new Tweet();
         client = TwitterApplication.getRestClient();
 

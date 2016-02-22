@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.codepath.tweets.tweets.models.Tweet;
 import com.squareup.picasso.Picasso;
 
@@ -43,13 +44,17 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         TextView tvUserhandle = (TextView) convertView.findViewById(R.id.tvUserHandle);
         TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
         TextView tvTime = (TextView) convertView.findViewById(R.id.tvTimestamp);
+        TextView tvretweetCount = (TextView) convertView.findViewById(R.id.tvretweetCount);
+        TextView tvfavCount = (TextView) convertView.findViewById(R.id.tvfavCount);
 
-            tvUserName.setText(tweet.getUser().getScreenName());
-            tvUserhandle.setText(tweet.getUser().getName());
+            tvUserName.setText(tweet.getUser().getName());
+            tvUserhandle.setText("@" + tweet.getUser().getScreenName());
+            tvretweetCount.setText(String.valueOf(tweet.getRetweetCount()));
             tvBody.setText(tweet.getBody());
             tvTime.setText(dateFormat(tweet.getCreatedAt()));
             ivProfileImage.setImageResource(android.R.color.transparent);
-            Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+            Glide.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+
         return convertView;
     }
 
@@ -83,9 +88,9 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         } else if (prettyTimeString.contains("second")) {
             prettyTime = prettyTimeString.replace(" second ago", "s");
         } else if (prettyTimeString.contains("moments")) {
-            prettyTime = prettyTimeString.replace("moments ago", "just now");
+            prettyTime = prettyTimeString.replace("moments ago", "Just Now");
         } else if (prettyTimeString.contains("moments")) {
-            prettyTime = prettyTimeString.replace("moments from now", "just now");
+            prettyTime = prettyTimeString.replace("moments from now", "Just Now");
         }
 
         return prettyTime;
