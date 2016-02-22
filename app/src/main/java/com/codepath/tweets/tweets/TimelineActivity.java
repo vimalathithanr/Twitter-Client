@@ -13,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.codepath.tweets.tweets.models.Tweet;
+import com.codepath.tweets.tweets.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -53,7 +55,7 @@ public class TimelineActivity extends AppCompatActivity {
         ivCompose.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Intent in = new Intent(TimelineActivity.this, ComposeTweetActivity.class);
-                startActivity(in);
+                startActivityForResult(in, 1);
             }
         });
 
@@ -73,13 +75,11 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
 
-    private void populateTimeline(){
-        client.getHomeTimeline(new JsonHttpResponseHandler(){
+    private void populateTimeline() {
+        client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                //Log.d("DEBUG", json.toString());
                 aTweets.addAll(Tweet.fromJSONArray(json));
-
             }
 
             @Override
@@ -87,6 +87,27 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.d("DEBUG", errorResponse.toString());
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("Entering2", "Hello2");
+        String newTweet = data.getStringExtra("tweet");
+        Tweet newTweets = new Tweet();
+        User newUser = new User();
+        newTweets.setComposeTweet(newTweet);
+        newTweets.setBody(newTweet);
+        newTweets.setCreatedAt(data.getStringExtra("createdAt"));
+
+        newUser.setName(data.getStringExtra("name"));
+        newUser.setScreenName(data.getStringExtra("screenName"));
+        newUser.setProfileImageUrl(data.getStringExtra("profileImage"));
+        newTweets.setUser(newUser);
+
+        tweets.add(0, newTweets);
+
+        aTweets.notifyDataSetChanged();
+        lvTweets.setSelectionAfterHeaderView();
     }
 
 }

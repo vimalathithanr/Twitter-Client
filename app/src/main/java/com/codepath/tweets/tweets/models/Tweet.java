@@ -16,6 +16,23 @@ public class Tweet {
     private User user;
     private static String composeTweet;
 
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
     public String getComposeTweet() {
         return this.composeTweet;
     }
@@ -27,6 +44,7 @@ public class Tweet {
     public User getUser() {
         return user;
     }
+
 
     public String getBody() {
         return body;
@@ -63,7 +81,7 @@ public class Tweet {
             try {
                 tweetJson = jsonArray.getJSONObject(i);
                 Tweet tweet = Tweet.fromJSON(tweetJson);
-                if(tweet != null){
+                if (tweet != null) {
                     tweets.add(tweet);
                 }
 

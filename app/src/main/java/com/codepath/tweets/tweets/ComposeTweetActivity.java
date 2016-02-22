@@ -1,19 +1,18 @@
 package com.codepath.tweets.tweets;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.codepath.tweets.tweets.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
-import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ComposeTweetActivity extends AppCompatActivity {
@@ -21,6 +20,13 @@ public class ComposeTweetActivity extends AppCompatActivity {
     private TwitterClient client;
     private EditText etCompose;
     private Tweet tweet;
+    String composeTweet;
+    private String createdAt;
+    private String id;
+    private String text;
+    private String name;
+    private String screenName;
+    private String profileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +42,36 @@ public class ComposeTweetActivity extends AppCompatActivity {
         client = TwitterApplication.getRestClient();
 
         if (etCompose.getText().toString() != null) {
-            String composeTweet = etCompose.getText().toString();
+            composeTweet = etCompose.getText().toString();
             tweet.setComposeTweet(composeTweet);
+
         }
 
 
         client.postTweet(new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray json) {
-                Toast.makeText(ComposeTweetActivity.this, "Tweet Posted!", Toast.LENGTH_SHORT).show();
+            public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
+                Log.d("Help", json.toString());
+                try {
+                    createdAt = json.getString("created_at");
+                    text = json.getString("text");
+                    name = json.getJSONObject("user").getString("name");
+                    screenName = json.getJSONObject("user").getString("screen_name");
+                    profileImage = json.getJSONObject("user").getString("profile_image_url");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Intent data = new Intent();
+                data.putExtra("tweet", composeTweet);
+                data.putExtra("createdAt", createdAt);
+                data.putExtra("text", text);
+                data.putExtra("name", name);
+                data.putExtra("screenName", screenName);
+                data.putExtra("profileImage", profileImage);
+                setResult(RESULT_OK, data);
+                finish();
             }
 
             @Override
@@ -53,4 +80,5 @@ public class ComposeTweetActivity extends AppCompatActivity {
             }
         });
     }
+
 }

@@ -37,22 +37,24 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
         }
 
+
         ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
         TextView tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
+        TextView tvUserhandle = (TextView) convertView.findViewById(R.id.tvUserHandle);
         TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
         TextView tvTime = (TextView) convertView.findViewById(R.id.tvTimestamp);
 
-        tvUserName.setText(tweet.getUser().getScreenName());
-        tvBody.setText(tweet.getBody());
-
-        tvTime.setText(dateFormat(tweet.getCreatedAt()));
-        ivProfileImage.setImageResource(android.R.color.transparent);
-        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+            tvUserName.setText(tweet.getUser().getScreenName());
+            tvUserhandle.setText(tweet.getUser().getName());
+            tvBody.setText(tweet.getBody());
+            tvTime.setText(dateFormat(tweet.getCreatedAt()));
+            ivProfileImage.setImageResource(android.R.color.transparent);
+            Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
         return convertView;
     }
 
 
-    public String dateFormat(String serverDate){
+    public String dateFormat(String serverDate) {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd kk:mm:ss z yyyy");
         Date d = null;
         try {
@@ -76,6 +78,14 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             prettyTime = prettyTimeString.replace(" hours ago", "h");
         } else if (prettyTimeString.contains("hour")) {
             prettyTime = prettyTimeString.replace(" hour ago", "h");
+        } else if (prettyTimeString.contains("seconds")) {
+            prettyTime = prettyTimeString.replace(" seconds ago", "s");
+        } else if (prettyTimeString.contains("second")) {
+            prettyTime = prettyTimeString.replace(" second ago", "s");
+        } else if (prettyTimeString.contains("moments")) {
+            prettyTime = prettyTimeString.replace("moments ago", "just now");
+        } else if (prettyTimeString.contains("moments")) {
+            prettyTime = prettyTimeString.replace("moments from now", "just now");
         }
 
         return prettyTime;
