@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.codepath.tweets.tweets.ComposeTweetActivity">
+    tools:context="com.codepath.tweets.tweets.ProfileActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,7 +21,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_compose_tweet" />
+    <include layout="@layout/content_profile" />
+
 
 
 </android.support.design.widget.CoordinatorLayout>

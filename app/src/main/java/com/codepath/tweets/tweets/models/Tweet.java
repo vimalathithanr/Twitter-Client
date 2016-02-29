@@ -17,6 +17,8 @@ public class Tweet {
     private static String composeTweet;
     private long retweetCount;
 
+    private long favCount;
+
     public long getRetweetCount() {
         return retweetCount;
     }
@@ -75,6 +77,7 @@ public class Tweet {
             tweet.body = jsonObject.getString("text");
             tweet.uid = jsonObject.getLong("id");
             tweet.retweetCount = jsonObject.getLong("retweet_count");
+
             tweet.createdAt = jsonObject.getString("created_at");
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
         } catch (JSONException e) {

@@ -1,14 +1,21 @@
 package com.codepath.tweets.tweets;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.codepath.tweets.tweets.fragments.UserTimelineFragment;
 import com.codepath.tweets.tweets.models.Tweet;
 import com.squareup.picasso.Picasso;
 
@@ -24,6 +31,9 @@ import java.util.List;
  * Created by VRAJA03 on 2/19/2016.
  */
 public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
+
+    RecyclerView.ViewHolder holder;
+
     public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
         super(context, 0, tweets);
     }
@@ -38,22 +48,43 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
         }
 
-
         ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
-        TextView tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
-        TextView tvUserhandle = (TextView) convertView.findViewById(R.id.tvUserHandle);
+        final TextView tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
+        final TextView tvUserhandle = (TextView) convertView.findViewById(R.id.tvUserHandle);
         TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
         TextView tvTime = (TextView) convertView.findViewById(R.id.tvTimestamp);
         TextView tvretweetCount = (TextView) convertView.findViewById(R.id.tvretweetCount);
         TextView tvfavCount = (TextView) convertView.findViewById(R.id.tvfavCount);
 
-            tvUserName.setText(tweet.getUser().getName());
-            tvUserhandle.setText("@" + tweet.getUser().getScreenName());
-            tvretweetCount.setText(String.valueOf(tweet.getRetweetCount()));
-            tvBody.setText(tweet.getBody());
-            tvTime.setText(dateFormat(tweet.getCreatedAt()));
-            ivProfileImage.setImageResource(android.R.color.transparent);
-            Glide.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+        tvUserName.setText(tweet.getUser().getName());
+        tvUserhandle.setText(tweet.getUser().getScreenName());
+        tvretweetCount.setText(String.valueOf(tweet.getRetweetCount()));
+        tvBody.setText(tweet.getBody());
+        tvTime.setText(dateFormat(tweet.getCreatedAt()));
+        //tvfavCount.setText(String.valueOf(tweet.getFavCount()));
+        ivProfileImage.setImageResource(android.R.color.transparent);
+        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+
+
+        if (tweet != null) {
+            ImageView ivProfileImageset = (ImageView) convertView.findViewById(R.id.ivProfileImage);
+            //set as the tag the position parameter
+            ivProfileImageset.setTag(new Integer(position));
+            ivProfileImageset.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    Integer realPosition = (Integer) v.getTag();
+                    Intent intent = new Intent(getContext(), ProfileActivity.class);
+
+                    intent.putExtra("screen_name", tvUserhandle.getText().toString());
+                    v.getContext().startActivity(intent);
+                }
+            });
+
+        }
+
 
         return convertView;
     }

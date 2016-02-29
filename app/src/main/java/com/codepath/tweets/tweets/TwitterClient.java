@@ -18,14 +18,14 @@ public class TwitterClient extends OAuthBaseClient {
     public static final String REST_CALLBACK_URL = "oauth://cpsimpletweets"; // Change this (here and in manifest)
 
     int since_id = 1;
-    int page=1;
+    int page = 1;
 
     public TwitterClient(Context context) {
         super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
     }
 
-    public void addPage(int pageFromTimeline){
-        page=pageFromTimeline;
+    public void addPage(int pageFromTimeline) {
+        page = pageFromTimeline;
     }
 
     public void getHomeTimeline(AsyncHttpResponseHandler handler) {
@@ -45,14 +45,26 @@ public class TwitterClient extends OAuthBaseClient {
         params.put("status", status);
         getClient().post(apiUrl, params, handler);
     }
-    //composing a tweet
 
-	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
-     * 	  i.e getApiUrl("statuses/home_timeline.json");
-	 * 2. Define the parameters to pass to the request (query or body)
-	 *    i.e RequestParams params = new RequestParams("foo", "bar");
-	 * 3. Define the request method and make a call to the client
-	 *    i.e client.get(apiUrl, params, handler);
-	 *    i.e client.post(apiUrl, params, handler);
-	 */
+    public void getMentionsTimeline(AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("page", page);
+        params.put("count", 25);
+        getClient().get(apiUrl, params, handler);
+    }
+
+    public void getUserTimeline(String screenName, AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("statuses/user_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("page", page);
+        params.put("count", 25);
+        params.put("screen_name", screenName);
+        getClient().get(apiUrl, params, handler);
+    }
+
+    public void getUserInfo(AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("account/verify_credentials.json");
+        getClient().get(apiUrl, null, handler);
+    }
 }

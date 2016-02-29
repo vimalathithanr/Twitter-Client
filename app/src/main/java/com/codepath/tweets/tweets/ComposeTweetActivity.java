@@ -75,7 +75,7 @@ public class ComposeTweetActivity extends AppCompatActivity {
         client.postTweet(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject json) {
-                Log.d("Help", json.toString());
+
                 try {
                     createdAt = json.getString("created_at");
                     text = json.getString("text");
